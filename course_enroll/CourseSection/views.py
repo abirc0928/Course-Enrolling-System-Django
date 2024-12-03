@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .serializers import *
+from sections.models import *
+from course.models import *
 # from .serializers import *
 # Create your views here.
 
@@ -14,9 +16,10 @@ class CourseSectionView(APIView):
         serializer = CourseSectionSerializer(course_section, many=True)
         return Response(serializer.data)
     def post(self, request):
-        course = CourseSection(
-            course=Course.objects.get(id=request.data["course_id"]),
-            section=Sections.objects.get(id=request.data["section_id"]),
-        )
-        course.save()
-        return Response(status=status.HTTP_201_CREATED)
+        serializer = CourseSectionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
