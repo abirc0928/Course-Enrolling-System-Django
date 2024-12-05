@@ -17,7 +17,6 @@ This project is a Django REST Framework (DRF) API for managing course enrollment
 
 3. **Course-Section System**
    - Prevents duplicate sections from being created within the same course.
-   - Ensures data integrity for courses and sections.
 
 4. **Teacher Enrollment**
    - Allows teachers to enroll in course sections.
