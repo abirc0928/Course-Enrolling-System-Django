@@ -19,5 +19,6 @@ from rest_framework.viewsets import ModelViewSet
         
 
 class SectionViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Sections.objects.all()
     serializer_class = SectionSerializer

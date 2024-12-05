@@ -9,10 +9,12 @@ from .models import *
 from .serializers import *
 from sections.models import *
 from course.models import *
+
 # from .serializers import *
 # Create your views here.
 
 class CourseSectionView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         course_section = CourseSection.objects.all()
         serializer = CourseSectionSerializer(course_section, many=True)
@@ -28,6 +30,7 @@ class CourseSectionView(APIView):
    
 
 class CourseSectionViewDetails(APIView):
+     permission_classes = [IsAuthenticated]
      def put(self, request, pk):
         print("updatate")
         try:

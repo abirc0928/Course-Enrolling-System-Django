@@ -26,6 +26,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class CourseViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     

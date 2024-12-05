@@ -3,6 +3,10 @@ from .models import *
 from course.serializers import CourseSerializer
 from sections.serializers import SectionSerializer
 from teachers.serializers import TeacherSerializer
+from students.serializer import StudentSerializer
+from students.models import Students
+from student_course.models import StudentCourse
+# from student_course.serializers import *
 
 
 class CourseSectionSerializer(serializers.ModelSerializer):
@@ -16,6 +20,8 @@ class CourseSectionSerializer(serializers.ModelSerializer):
     section = SectionSerializer(read_only=True)  # Show section details in the response
     teacher = TeacherSerializer(read_only=True)  # Show teacher details in the response
 
+    students = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = CourseSection
         fields = [
@@ -26,7 +32,14 @@ class CourseSectionSerializer(serializers.ModelSerializer):
             "course",
             "section",
             "teacher",
+            "students",
         ]
+
+    def get_students(self, obj):
+        # Fetch students linked to this course section
+        student_courses = StudentCourse.objects.filter(course_section=obj)
+        students = [sc.student for sc in student_courses]
+        return StudentSerializer(students, many=True).data  
 
     def validate(self, data):
         request_method = self.context.get("request_method", None)
