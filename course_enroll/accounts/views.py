@@ -22,7 +22,6 @@ class RegistrationView(APIView):
                 'access': str(refresh.access_token)
             })
     
-        
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -32,26 +31,24 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             key="refresh_token",
             value=tokens["refresh"],
             httponly=True,
-            # source= True,
-            # samesite='Lax'
+           
         )
 
         response.set_cookie(
             key="access_token",
             value=tokens["access"],
             httponly=True,
-            # source= True,
-            # samesite='Lax'
+            
         )
 
         print("tokens",tokens)
         return response
-    
+
 class LogoutView(APIView):
     def post(self, request):
         # Create a response
         response = Response({"success": "Logged out successfully"})
-
+ 
         # Delete the access and refresh token cookies
         response.delete_cookie('access_token')
         response.delete_cookie('refresh_token')

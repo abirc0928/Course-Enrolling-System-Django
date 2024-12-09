@@ -38,7 +38,10 @@ class CourseSectionSerializer(serializers.ModelSerializer):
     def get_students(self, obj):
         # Fetch students linked to this course section
         student_courses = StudentCourse.objects.filter(course_section=obj)
-        students = [sc.student for sc in student_courses]
+        students = []  # Create an empty list
+        for sc in student_courses:  # Loop through the student_courses queryset
+            students.append(sc.student)  # Add the `student` field of each StudentCourse to the list
+            
         return StudentSerializer(students, many=True).data  
 
     def validate(self, data):
